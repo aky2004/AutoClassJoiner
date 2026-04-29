@@ -22,6 +22,9 @@
 
 ---
 
+> [!CAUTION]
+> **RESTRICTED USE ONLY:** This repository is for demonstration and portfolio purposes. Unauthorized copying, distribution, or execution of this software is strictly prohibited under the [Proprietary License](./LICENSE).
+
 > **Disclaimer:** This project was built strictly for educational and learning purposes. It demonstrates headless browser automation, web scraping, and cloud scheduling. Please use responsibly and ensure compliance with your institution's acceptable use policies.
 
 ---
