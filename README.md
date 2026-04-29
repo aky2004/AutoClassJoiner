@@ -22,13 +22,6 @@
 
 ---
 
-> [!CAUTION]
-> **RESTRICTED USE ONLY:** This repository is for demonstration and portfolio purposes. Unauthorized copying, distribution, or execution of this software is strictly prohibited under the [Proprietary License](./LICENSE).
-
-> **Disclaimer:** This project was built strictly for educational and learning purposes. It demonstrates headless browser automation, web scraping, and cloud scheduling. Please use responsibly and ensure compliance with your institution's acceptable use policies.
-
----
-
 ## Overview
 
 AutoClassJoiner is a fully autonomous bot that handles the entire class-joining lifecycle — logging in, parsing the timetable, detecting ongoing sessions, and clicking join — without any human intervention. A live dashboard streams the headless browser viewport in real time, and Telegram notifications keep you informed of every state change.
@@ -110,7 +103,7 @@ Open `http://localhost:3000` to view the live dashboard.
 ## Deploying to Render
 
 1. Push your code to GitHub
-2. Go to [render.com](https://render.com) and create a New Web Service
+2. Go to [[render.com](http://render.com)](https://render.com) and create a New Web Service
 3. Connect your repository and use the following settings:
 
 | Setting | Value |
@@ -154,7 +147,6 @@ AutoClassJoiner/
 
 ```
 Copyright (c) 2026 Aman Yadav. All Rights Reserved.
-
 Viewing of this source code is permitted.
 Copying, modification, distribution, or use of this code
 in whole or in part, without explicit written permission
@@ -164,5 +156,46 @@ from the author is strictly prohibited.
 ---
 
 <div align="center">
+
 Developed by <b>Aman Kumar Yadav</b> — automating the boring stuff.
+
+</div>
+
+---
+
+<div align="center">
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║   ██████╗  █████╗ ███╗   ██╗ ██████╗ ███████╗██████╗            ║
+║   ██╔══██╗██╔══██╗████╗  ██║██╔════╝ ██╔════╝██╔══██╗           ║
+║   ██║  ██║███████║██╔██╗ ██║██║  ███╗█████╗  ██████╔╝           ║
+║   ██║  ██║██╔══██║██║╚██╗██║██║   ██║██╔══╝  ██╔══██╗           ║
+║   ██████╔╝██║  ██║██║ ╚████║╚██████╔╝███████╗██║  ██║           ║
+║   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝           ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+![RESTRICTED](https://img.shields.io/badge/⛔_ACCESS-RESTRICTED-ff0000?style=for-the-badge)
+![LICENSE](https://img.shields.io/badge/📜_LICENSE-PROPRIETARY-ff6600?style=for-the-badge)
+![USE](https://img.shields.io/badge/🎓_PURPOSE-EDUCATIONAL_ONLY-ffcc00?style=for-the-badge)
+
+</div>
+
+> [!CAUTION]
+> **RESTRICTED USE ONLY:** This repository is for demonstration and portfolio purposes. Unauthorized copying, distribution, or execution of this software is strictly prohibited under the [Proprietary License](./LICENSE).
+>
+> **Disclaimer:** This project was built strictly for educational and learning purposes. It demonstrates headless browser automation, web scraping, and cloud scheduling. Please use responsibly and ensure compliance with your institution's acceptable use policies.
+
+<div align="center">
+
+```
+◆━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━◆
+    Unauthorized use is a violation of the Proprietary License.
+            Viewing permitted · All other rights reserved.
+◆━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━◆
+```
+
 </div>
