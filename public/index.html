@@ -308,16 +308,19 @@
     };
 
     // ── Telegram handlers ──
-    $('tgTestBtn').onclick = async () => {
-      $('tgTestBtn').disabled = true;
-      try {
-        const res = await fetch(`${API}/api/telegram/test`, { method: 'POST' });
-        const d = await res.json();
-        alert(d.success ? '✅ Test sent! Check Telegram.' : '❌ ' + (d.error || d.message));
-      } catch { alert('Network error'); }
-      $('tgTestBtn').disabled = false;
-      fetchStatus();
-    };
+    const tgBtn = $('tgTestBtn');
+    if (tgBtn) {
+      tgBtn.onclick = async () => {
+        tgBtn.disabled = true;
+        try {
+          const res = await fetch(`${API}/api/telegram/test`, { method: 'POST' });
+          const d = await res.json();
+          alert(d.success ? '✅ Test sent! Check Telegram.' : '❌ ' + (d.error || d.message));
+        } catch { alert('Network error'); }
+        tgBtn.disabled = false;
+        fetchStatus();
+      };
+    }
   </script>
 </body>
 </html>
