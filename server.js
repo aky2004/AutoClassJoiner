@@ -258,6 +258,14 @@ function startCronJob() {
     timezone: 'Asia/Kolkata'
   });
 
+  // Nightly Logout: At 11:05 PM on Tue, Thu, Sat, close the browser to log out.
+  cron.schedule('5 23 * * 2,4,6', async () => {
+    bot.log('🌙 End of shift. Closing browser and logging out to save resources.');
+    await bot.closeBrowser();
+  }, {
+    timezone: 'Asia/Kolkata'
+  });
+
   bot.log('Cron job started — checking every 2 min on Tue, Thu, Sat (6 PM - 11 PM).');
 }
 
