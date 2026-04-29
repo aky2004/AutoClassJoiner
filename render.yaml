@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: autoclassjoiner-bot
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: REG_NUMBER
+        sync: false
+      - key: PASSWORD
+        sync: false
+      - key: RENDER_EXTERNAL_URL
+        value: https://autobot-8y7d.onrender.com
+      - key: NODE_ENV
+        value: production

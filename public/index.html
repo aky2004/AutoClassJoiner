@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoClassJoiner — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-dot"></div>
+        <h1>AutoClassJoiner</h1>
+      </div>
+      <span class="uptime" id="uptime">0h 0m uptime</span>
+    </header>
+
+    <div class="layout-grid">
+      <!-- Left Column: Controls & Status -->
+      <div class="sidebar">
+        <!-- Status -->
+        <div class="status-bar" id="statusBar">
+          <div class="status-dot" id="statusDot"></div>
+          <div class="status-info">
+            <strong id="statusText">Initializing...</strong>
+            <p id="statusSub">Connecting</p>
+          </div>
+          <button class="icon-btn" id="toggleBtn" title="Toggle Bot">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+          </button>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-label">Last Check</span>
+            <span class="metric-value" id="lastCheck">Never</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Last Joined</span>
+            <span class="metric-value" id="lastJoined">None</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Classes</span>
+            <span class="metric-value" id="classCount">0</span>
+          </div>
+        </div>
+
+        <!-- Account Info -->
+        <section class="section account-section">
+          <h2>Account</h2>
+          <div class="account-card">
+            <div class="avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="account-details">
+              <strong id="userRegNo">Loading...</strong>
+              <span id="accountStatus">Checking config</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Actions -->
+        <section class="section">
+          <h2>Actions</h2>
+          <div class="btn-stack">
+            <button class="btn-outline" id="checkNowBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              Force Check Now
+            </button>
+          </div>
+        </section>
+
+        <!-- Telegram Notifications -->
+        <section class="section" style="flex: 1; display: flex; flex-direction: column; min-height: 150px;">
+          <div class="section-header" style="margin-bottom: 10px;">
+            <h2>Telegram Alerts</h2>
+            <!-- <button class="btn-small tg-test" id="tgTestBtn">🔔 Test</button> -->
+            <div class="telegram-status" id="telegramStatus" style="padding-top: -10px;">
+              <span class="tg-dot" id="tgDot"></span>
+              <span id="tgLabel">Checking...</span>
+            </div>
+          </div>
+          <div class="telegram-log" id="tgLogs" style="margin-top: 12px; flex: 1; max-height: 160px; overflow-y: auto; font-size: 11px; color: var(--text-muted); display: flex; flex-direction: column; gap: 8px;">
+            <div class="log-empty">Waiting for alerts...</div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right Column (Top): Live View -->
+      <div class="main-content">
+        <!-- Live Browser View -->
+        <section class="section browser-section">
+          <div class="section-header">
+            <div class="header-with-status">
+              <h2>Live Browser View</h2>
+            </div>
+            <button class="btn-small" id="refreshBrowserBtn">Refresh</button>
+          </div>
+          <p class="url-bar" id="browserUrl">Initializing view...</p>
+          <div class="browser-frame" id="browserFrame">
+            <img id="browserStream" src="/api/stream" alt="Live browser view" style="width:100%;height:auto;border-radius:0 0 10px 10px;background:#1a1a1a;">
+          </div>
+        </section>
+      </div>
+
+      <!-- Left Column (Bottom): Schedule -->
+      <div class="sidebar-bottom" style="display: flex; flex-direction: column; min-width: 0; gap: 16px;">
+        <section class="section" id="scheduleCard" style="flex: 1; min-height: 100px;">
+          <div class="section-header">
+            <h2>Today's Classes</h2>
+          </div>
+          <div id="timetable" class="timetable-scroll">
+            <p class="log-empty">Waiting for schedule data...</p>
+          </div>
+        </section>
+
+        <!-- Developer Info -->
+        <section style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px 20px;text-align:center;background: var(--bg-card);border: 1px solid var(--border);border-radius: var(--radius);">
+          <div>
+            <p style="margin:0;font-size:13px;font-weight:500;color:var(--text);">Aman Yadav</p>
+            <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary);">__somewhere, a cron job is doing your job__</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+        
+            <!-- JavaScript -->
+            <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="4" fill="#F7DF1E"/><path d="M9 24.5l2.3-1.4c.4.8.8 1.4 1.7 1.4.9 0 1.4-.3 1.4-1.7V14h2.9v8.9c0 2.8-1.6 4-4 4-2.1 0-3.4-1.1-4-2.4zM19 24.2l2.3-1.4c.6 1 1.3 1.7 2.6 1.7 1.1 0 1.8-.5 1.8-1.3 0-.9-.7-1.2-1.9-1.7l-.7-.3c-1.9-.8-3.1-1.8-3.1-3.9 0-1.9 1.5-3.4 3.8-3.4 1.6 0 2.8.6 3.6 2l-2.2 1.4c-.4-.8-1-1.1-1.7-1.1-.8 0-1.3.5-1.3 1.1 0 .8.5 1.1 1.6 1.6l.7.3c2.2 1 3.4 2 3.4 4.1 0 2.3-1.8 3.6-4.3 3.6-2.4 0-3.9-1.1-4.7-2.7z" fill="#000"/></svg>
+        
+            <!-- CSS -->
+            <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="4" fill="#264DE4"/><path d="M6 4l2 22 8 2 8-2 2-22H6zm14.7 14.4l-.3 3.2-4.4 1.2-4.4-1.2-.3-3.4h2.8l.1 1.6 1.8.5 1.8-.5.2-2.1H9.8l-.6-7h13.6l-.2 2.4h-10l.2 2.2h9.7l-.8 5.1z" fill="#fff"/></svg>
+        
+            <!-- YAML -->
+            <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="4" fill="#CB171E"/><path d="M8 10h2v2H8zm0 4h2v2H8zm0 4h2v2H8zm4-8h8v2H12zm0 4h6v2H12zm0 4h8v2H12z" fill="#fff"/></svg>
+        
+            <!-- CJS -->
+            <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="4" fill="#1a1a1a"/><text x="4" y="22" font-size="11" font-weight="700" fill="#8CC84B" font-family="monospace">.cjs</text></svg>
+        
+            <!-- Puppeteer -->
+            <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="4" fill="#00D8A2"/><circle cx="16" cy="13" r="5.5" fill="none" stroke="#fff" stroke-width="2"/><circle cx="13.5" cy="12" r="1.5" fill="#fff"/><circle cx="18.5" cy="12" r="1.5" fill="#fff"/><path d="M13 17c1 1.2 5 1.2 6 0" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="18.5" x2="16" y2="23" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="23" x2="20" y2="23" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        
+            <!-- Docker -->
+            <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="4" fill="#2496ED"/><rect x="5" y="15" width="3.5" height="3.5" rx="0.5" fill="#fff"/><rect x="9.5" y="15" width="3.5" height="3.5" rx="0.5" fill="#fff"/><rect x="14" y="15" width="3.5" height="3.5" rx="0.5" fill="#fff"/><rect x="9.5" y="10.5" width="3.5" height="3.5" rx="0.5" fill="#fff"/><rect x="14" y="10.5" width="3.5" height="3.5" rx="0.5" fill="#fff"/><path d="M28 18c-1-1-3-1-3-1s-.5-2-2-2c0 0 0 3.5-4 3.5H5s0 3.5 5.5 3.5h8c4 0 6.5-2 9.5-4z" fill="#fff"/></svg>
+        
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column (Bottom): Logs -->
+      <div class="main-content-bottom" style="display: flex; flex-direction: column; min-width: 0;">
+        <!-- Activity Log -->
+        <section class="section log-section" style="flex: 1;">
+          <div class="section-header">
+            <h2>Activity Log</h2>
+            <button class="btn-small" id="clearLogsBtn">Clear</button>
+          </div>
+          <div class="logs" id="logs">
+            <div class="log-empty">Waiting for activity...</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const API = '';
+    const $ = id => document.getElementById(id);
+
+    setInterval(fetchStatus, 5000);
+    fetchStatus();
+
+    // Refresh button reloads the MJPEG stream
+    $('refreshBrowserBtn').onclick = () => {
+      const stream = $('browserStream');
+      stream.src = '/api/stream?' + Date.now();
+    };
+
+    async function fetchStatus() {
+      try {
+        const res = await fetch(`${API}/api/status`);
+        updateUI(await res.json());
+      } catch {
+        $('statusText').textContent = 'Disconnected';
+        $('statusSub').textContent = 'Server offline';
+        $('statusDot').className = 'status-dot error';
+        $('statusBar').className = 'status-bar error';
+      }
+    }
+
+    function updateUI(d) {
+      const dot = $('statusDot');
+      const bar = $('statusBar');
+      dot.className = 'status-dot';
+      bar.className = 'status-bar';
+
+      if (!d.botEnabled) {
+        dot.classList.add('paused'); bar.classList.add('paused');
+        $('statusText').textContent = 'Paused';
+        $('statusSub').textContent = 'Bot is disabled';
+      } else if (d.status === 'joined') {
+        dot.classList.add('active'); bar.classList.add('active');
+        $('statusText').textContent = 'Class Joined';
+        $('statusSub').textContent = d.lastJoined?.name || 'Joined successfully';
+      } else if (d.status === 'checking' || d.status === 'logging_in') {
+        dot.classList.add('checking');
+        $('statusText').textContent = 'Scanning';
+        $('statusSub').textContent = d.status === 'logging_in' ? 'Logging in...' : 'Checking classes...';
+      } else if (['logged_in','waiting','no_active_class','no_classes'].includes(d.status)) {
+        dot.classList.add('active'); bar.classList.add('active');
+        $('statusText').textContent = 'Monitoring';
+        $('statusSub').textContent = 'Waiting for class';
+      } else if (d.status === 'login_failed' || d.status === 'error') {
+        dot.classList.add('error'); bar.classList.add('error');
+        $('statusText').textContent = 'Error';
+        $('statusSub').textContent = d.status === 'login_failed' ? 'Invalid credentials' : 'Check logs';
+      } else {
+        if (d.hasCredentials) {
+          dot.classList.add('active'); bar.classList.add('active');
+          $('statusText').textContent = 'Running';
+          $('statusSub').textContent = 'Cron active';
+        } else {
+          $('statusText').textContent = 'Setup Required';
+          $('statusSub').textContent = 'Missing .env config';
+        }
+      }
+
+      // Telegram status & logs
+      const tgDot = $('tgDot');
+      const tgLabel = $('tgLabel');
+      if (d.telegramEnabled) {
+        tgDot.className = 'tg-dot active';
+        tgLabel.textContent = 'Connected';
+      } else {
+        tgDot.className = 'tg-dot';
+        tgLabel.textContent = 'Not configured';
+      }
+
+      if (d.telegramHistory && d.telegramHistory.length) {
+        $('tgLogs').innerHTML = d.telegramHistory.map(l => {
+          const lines = l.message.split('\n').filter(line => line.trim().length > 0);
+          const cleanedMessage = lines.slice(0, 2).join('<br>');
+          return `<div style="padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--border);">
+                    <strong style="color: var(--text-secondary); font-family: monospace; display: block; margin-bottom: 4px;">${l.time.split(', ')[1]}</strong>
+                    <span style="line-height: 1.5; display: block;">${cleanedMessage}</span>
+                  </div>`;
+        }).join('');
+      } else {
+        $('tgLogs').innerHTML = '<div class="log-empty">No alerts sent yet.</div>';
+      }
+
+      $('lastCheck').textContent = d.lastCheck || 'Never';
+      $('lastJoined').textContent = d.lastJoined?.name || 'None';
+      $('classCount').textContent = d.timetable?.length || '0';
+
+      const h = Math.floor(d.uptime/3600), m = Math.floor((d.uptime%3600)/60);
+      $('uptime').textContent = `${h}h ${m}m uptime`;
+
+      // Update URL bar from status
+      if (d.currentUrl) $('browserUrl').textContent = d.currentUrl;
+
+      // Account info
+      if (d.hasCredentials && d.regNumber) {
+        $('userRegNo').textContent = d.regNumber;
+        $('accountStatus').textContent = 'Active';
+        $('accountStatus').className = 'success-text';
+      } else {
+        $('userRegNo').textContent = 'Missing Config';
+        $('accountStatus').textContent = 'Add REG_NUMBER & PASSWORD';
+        $('accountStatus').className = 'error-text';
+      }
+
+      // Render schedule
+      if (d.timetable) {
+        $('timetable').innerHTML = d.timetable.length
+          ? d.timetable.map(c => `<div class="class-row ${c.status}"><span class="class-dot ${c.status}"></span><div><strong>${c.name}</strong><br><small>${c.time||'No time'}</small></div><span class="tag ${c.status}">${c.status}</span></div>`).join('')
+          : '<p class="log-empty">No classes scheduled.</p>';
+      }
+
+      // Logs
+      if (d.logs?.length) {
+        $('logs').innerHTML = d.logs.slice().reverse().map(l =>
+          `<div class="log ${l.level}"><span class="log-time">${l.timestamp.split(', ')[1]}</span><span class="log-msg">${l.message}</span></div>`
+        ).join('');
+      }
+    }
+
+
+
+    $('toggleBtn').onclick = async () => {
+      await fetch(`${API}/api/toggle`, {method:'POST'});
+      fetchStatus();
+    };
+
+    $('checkNowBtn').onclick = async () => {
+      $('checkNowBtn').disabled = true;
+      const originalText = $('checkNowBtn').innerHTML;
+      $('checkNowBtn').innerHTML = 'Checking...';
+      try {
+        await fetch(`${API}/api/trigger`, {method:'POST'});
+      } catch {}
+      setTimeout(() => { $('checkNowBtn').disabled = false; $('checkNowBtn').innerHTML = originalText; fetchStatus(); }, 2000);
+    };
+
+    $('clearLogsBtn').onclick = () => {
+      $('logs').innerHTML = '<div class="log-empty">Logs cleared.</div>';
+    };
+
+    // ── Telegram handlers ──
+    $('tgTestBtn').onclick = async () => {
+      $('tgTestBtn').disabled = true;
+      try {
+        const res = await fetch(`${API}/api/telegram/test`, { method: 'POST' });
+        const d = await res.json();
+        alert(d.success ? '✅ Test sent! Check Telegram.' : '❌ ' + (d.error || d.message));
+      } catch { alert('Network error'); }
+      $('tgTestBtn').disabled = false;
+      fetchStatus();
+    };
+  </script>
+</body>
+</html>
