@@ -250,15 +250,15 @@ function startCronJob() {
     return;
   }
 
-  // Run every 2 minutes
-  cronJob = cron.schedule('*/2 * * * *', async () => {
+  // Run every 2 minutes only on Tue, Thu, Sat between 6 PM and 11 PM
+  cronJob = cron.schedule('*/2 18-22 * * 2,4,6', async () => {
     bot.log('⏰ Scheduled check triggered.');
     await bot.checkAndJoin(credentials.regNumber, credentials.password);
   }, {
     timezone: 'Asia/Kolkata'
   });
 
-  bot.log('Cron job started — checking every 2 min.');
+  bot.log('Cron job started — checking every 2 min on Tue, Thu, Sat (6 PM - 11 PM).');
 }
 
 function stopCronJob() {
