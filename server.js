@@ -171,13 +171,12 @@ app.get('/api/stream', (req, res) => {
 
   // Write a placeholder frame immediately so the browser shows something
   const writePlaceholder = () => {
-    const svg = Buffer.from(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720">` +
-      `<rect width="1280" height="720" fill="#1a1a1a"/>` +
-      `<text x="50%" y="50%" fill="#555" font-family="monospace" font-size="22" ` +
-      `text-anchor="middle" dominant-baseline="middle">No browser session active</text></svg>`
+    // Chrome does not support SVG inside MJPEG streams, so we use a 1x1 black JPEG
+    const blankJpeg = Buffer.from(
+      '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=',
+      'base64'
     );
-    writeFrame(svg, 'image/svg+xml');
+    writeFrame(blankJpeg, 'image/jpeg');
   };
 
   const writeFrame = (buffer, mime = 'image/jpeg') => {
