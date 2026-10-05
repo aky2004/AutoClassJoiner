@@ -951,6 +951,50 @@ class AutoClassBot {
   }
 
   /**
+   * Force leave the current meeting (if any), hard-close the browser (logout),
+   * reset all state, then start completely fresh — login + check + join.
+   *
+   * Called by the "Force Check Now" button on the dashboard.
+   * Handles the case where the bot believes it is in a class but the user
+   * has actually been disconnected from BigBlueButton.
+   */
+  async forceLeaveAndRejoin(regNumber, password) {
+    this.log('🔄 Force reset: leaving meeting and restarting from scratch.', 'warn');
+
+    // Step 1 — If currently in a meeting, navigate away to leave it
+    if (this.page && !this.page.isClosed()) {
+      try {
+        this.log('Navigating away from current page to leave meeting...');
+        await this.page.goto('about:blank', { timeout: 6000 }).catch(() => {});
+        await this.delay(800);
+      } catch (e) {
+        this.log(`Could not navigate away cleanly: ${e.message}`, 'warn');
+      }
+    }
+
+    // Step 2 — Close the browser entirely (equivalent to full logout)
+    this.log('Closing browser (full logout)...');
+    await this.closeBrowser();
+
+    // Step 3 — Reset all runtime state
+    this.status = 'idle';
+    this.isLoggedIn = false;
+    this.activeClassEndTime = null;
+    this.lastJoined = null;
+    this.timetable = [];
+    this.latestScreenshot = null;
+    this.latestScreenshotUrl = null;
+
+    // Notify via Telegram
+    this.notifier.disconnected('Force reset by user via dashboard');
+
+    // Step 4 — Brief pause, then start fresh
+    await this.delay(2000);
+    this.log('Starting fresh — logging in and checking for classes...');
+    return await this.checkAndJoin(regNumber, password);
+  }
+
+  /**
    * Parse a single time string like "09:00 PM" into an absolute Unix timestamp (ms)
    * relative to today's schedule in IST.
    */

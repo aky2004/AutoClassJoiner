@@ -67,7 +67,7 @@
           <div class="btn-stack">
             <button class="btn-outline" id="checkNowBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-              Force Check Now
+              Force Leave &amp; Rejoin
             </button>
           </div>
         </section>
@@ -295,12 +295,17 @@
 
     $('checkNowBtn').onclick = async () => {
       $('checkNowBtn').disabled = true;
-      const originalText = $('checkNowBtn').innerHTML;
-      $('checkNowBtn').innerHTML = 'Checking...';
+      const originalHTML = $('checkNowBtn').innerHTML;
+      $('checkNowBtn').innerHTML = 'Leaving & Restarting...';
       try {
-        await fetch(`${API}/api/trigger`, {method:'POST'});
+        // Leaves meeting (if active) → full logout → fresh login → rejoin
+        await fetch(`${API}/api/force-check`, { method: 'POST' });
       } catch {}
-      setTimeout(() => { $('checkNowBtn').disabled = false; $('checkNowBtn').innerHTML = originalText; fetchStatus(); }, 2000);
+      setTimeout(() => {
+        $('checkNowBtn').disabled = false;
+        $('checkNowBtn').innerHTML = originalHTML;
+        fetchStatus();
+      }, 3000);
     };
 
     $('clearLogsBtn').onclick = () => {

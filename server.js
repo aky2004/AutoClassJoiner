@@ -103,6 +103,17 @@ app.post('/api/trigger', async (req, res) => {
   res.json(result);
 });
 
+// Force leave meeting (if active) + hard logout + fresh login + rejoin
+app.post('/api/force-check', async (req, res) => {
+  if (!credentials.regNumber || !credentials.password) {
+    return res.status(400).json({ error: 'No credentials set.' });
+  }
+
+  bot.log('🔄 Force reset triggered from dashboard — leaving meeting and restarting.', 'warn');
+  const result = await bot.forceLeaveAndRejoin(credentials.regNumber, credentials.password);
+  res.json(result);
+});
+
 // Get timetable
 app.get('/api/schedule', (req, res) => {
   res.json({ timetable: bot.timetable });
@@ -249,23 +260,26 @@ function startCronJob() {
     return;
   }
 
-  // Run every 2 minutes only on Tue, Thu, Sat between 6 PM and 11 PM
-  cronJob = cron.schedule('*/2 18-22 * * 2,4,6', async () => {
+  // Run every 5 minutes, every day, from 8 AM to 9:59 PM IST
+  cronJob = cron.schedule('*/5 8-21 * * *', async () => {
     bot.log('⏰ Scheduled check triggered.');
     await bot.checkAndJoin(credentials.regNumber, credentials.password);
   }, {
     timezone: 'Asia/Kolkata'
   });
 
-  // Nightly Logout: At 11:05 PM on Tue, Thu, Sat, close the browser to log out.
-  cron.schedule('5 23 * * 2,4,6', async () => {
-    bot.log('🌙 End of shift. Closing browser and logging out to save resources.');
+  // Daily shutdown at 10:00 PM — close browser to free memory
+  cron.schedule('0 22 * * *', async () => {
+    bot.log('🌙 End of day (10 PM). Closing browser and logging out.');
     await bot.closeBrowser();
+    bot.status = 'idle';
+    bot.isLoggedIn = false;
+    bot.activeClassEndTime = null;
   }, {
     timezone: 'Asia/Kolkata'
   });
 
-  bot.log('Cron job started — checking every 2 min on Tue, Thu, Sat (6 PM - 11 PM).');
+  bot.log('Cron job started — checking every 5 min, daily 8 AM – 10 PM (IST).');
 }
 
 function stopCronJob() {
