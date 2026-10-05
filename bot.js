@@ -97,7 +97,7 @@ class AutoClassBot {
 
     // Silently capture frame on every log activity
     if (this.page && !this.page.isClosed()) {
-      this.page.screenshot({ encoding: 'base64', type: 'jpeg', quality: 40 })
+      this.page.screenshot({ encoding: 'base64', type: 'jpeg', quality: 75 })
         .then(b64 => {
           this.latestScreenshot = b64;
           this.latestScreenshotUrl = this.page.url();
@@ -907,7 +907,7 @@ class AutoClassBot {
     // If the browser is open, fetch a fresh one
     if (this.page && !this.page.isClosed()) {
       try {
-        const b64 = await this.page.screenshot({ encoding: 'base64', type: 'jpeg', quality: 40 });
+        const b64 = await this.page.screenshot({ encoding: 'base64', type: 'jpeg', quality: 80 });
         this.latestScreenshot = b64;
         this.latestScreenshotUrl = this.page.url();
       } catch (e) {

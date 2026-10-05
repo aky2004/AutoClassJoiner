@@ -101,7 +101,11 @@
           </div>
           <p class="url-bar" id="browserUrl">Initializing view...</p>
           <div class="browser-frame" id="browserFrame">
-            <img id="browserStream" src="/api/stream" alt="Live browser view" style="width:100%;height:auto;border-radius:0 0 10px 10px;background:#1a1a1a;">
+            <!-- src is set dynamically by the JS polling loop below -->
+            <img id="browserStream"
+                 alt="Live browser view"
+                 style="width:100%;height:auto;border-radius:0 0 10px 10px;background:#1a1a1a;display:block;"
+                 src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
           </div>
         </section>
       </div>
@@ -171,11 +175,38 @@
     setInterval(fetchStatus, 5000);
     fetchStatus();
 
-    // Refresh button reloads the MJPEG stream
-    $('refreshBrowserBtn').onclick = () => {
-      const stream = $('browserStream');
-      stream.src = '/api/stream?' + Date.now();
-    };
+    // ── Screenshot polling (replaces MJPEG — works on cloud proxies) ────────
+    // Fetches a fresh JPEG from /api/screenshot every 1.5 s and updates the
+    // img src directly. No long-lived connections = no proxy buffering issues.
+    let _screenPollTimer = null;
+
+    async function pollScreenshot() {
+      try {
+        const res = await fetch(`${API}/api/screenshot`, { cache: 'no-store' });
+        if (!res.ok) return;
+        const d = await res.json();
+        const img = $('browserStream');
+        if (d.image) {
+          img.src = 'data:image/jpeg;base64,' + d.image;
+          img.style.opacity = '1';
+        } else {
+          // No browser session — keep showing dark placeholder
+          img.style.opacity = '0.3';
+        }
+        if (d.url) $('browserUrl').textContent = d.url;
+      } catch { /* network blip — skip frame */ }
+    }
+
+    function startScreenPoll(ms) {
+      if (_screenPollTimer) clearInterval(_screenPollTimer);
+      pollScreenshot(); // immediate first frame
+      _screenPollTimer = setInterval(pollScreenshot, ms || 1500);
+    }
+
+    startScreenPoll(1500);
+
+    // Refresh button = grab a frame right now
+    $('refreshBrowserBtn').onclick = () => { pollScreenshot(); };
 
     async function fetchStatus() {
       try {
